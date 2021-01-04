@@ -4,6 +4,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import SimpleWebMux from "@/views/SimpleWebMux.vue"
+
 export default class App extends Vue {}
 </script>
 

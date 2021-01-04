@@ -24,11 +24,15 @@ export default class SimpleWebMux extends Vue {
     this.webMux = new WebMux(rootContainerRef);
   }
 
+  // todo: this should be hidden in the simple example
+  // ! potentially should be removed from public api
   resizeCallback(event: any) {
     const rootContainerRef = this.$refs.layout as Element;
     this.webMux.root.resizeContainer(rootContainerRef);
   }
 
+  // todo: this should be hidden in the simple example
+  // ! potentially should be removed from public api
   keydownCallback(event: any) {
     // key codes (https://keycode.info/)
     // prevent default - https://github.com/iFgR/vue-shortkey/issues/71

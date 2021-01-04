@@ -54,6 +54,6 @@ export class MuxWindow {
   }
 }
 
-export const isMuxWindow = (objectToCheck: unknown): boolean => {
-  return objectToCheck instanceof MuxWindow
+export function isMuxWindow(objectToCheck: unknown): objectToCheck is MuxWindow {
+  return (<MuxWindow>objectToCheck).windowId !== undefined;
 }

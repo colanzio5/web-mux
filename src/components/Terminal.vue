@@ -1,17 +1,13 @@
 <template>
-  <vue-command
-    class="terminal"
-    v-on:click="selectWindow(item.i)"
-    :commands="commands"
-  >
-    <div style="color: white">{item.i}</div>
-  </vue-command>
+  <vue-command :commands="commands"></vue-command>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import VueCommand, { createStdout } from "vue-command";
 import "vue-command/dist/vue-command.css";
+
+// ! placeholder vue component for the contents of each MuxWindow
 @Component({
   components: {
     VueCommand
@@ -23,8 +19,3 @@ export default class Terminal extends Vue {
   };
 }
 </script>
-
-<style scoped>
-.terminal {
-}
-</style>

@@ -1,5 +1,8 @@
 <template>
-
+  <!-- todo: title bar / show title text of window selected -->
+  <!-- show the root container of the webmux class we inject into the component -->
+  <div></div>
+  <!-- todo: tmux like status bar (window selection, links to visual configuration for component? ) -->
 </template>
 
 <script lang="ts">
