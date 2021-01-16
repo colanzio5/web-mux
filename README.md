@@ -1,4 +1,6 @@
-# webmux
+# WebMux 
+
+tmux/iterm/terminator (like) window management component written in typescript + vue
 
 ## Project setup
 ```
@@ -21,6 +23,7 @@ npm run test:unit
 ```
 
 ### Run your end-to-end tests
+
 ```
 npm run test:e2e
 ```
@@ -29,6 +32,3 @@ npm run test:e2e
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
