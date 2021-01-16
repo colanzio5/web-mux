@@ -24,6 +24,7 @@ export class MuxWindow {
   }
 }
 
+// todo: this should somehow check agains all MuxWindow required properties
 export function isMuxWindow(
   objectToCheck: unknown
 ): objectToCheck is MuxWindow {

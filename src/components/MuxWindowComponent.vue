@@ -1,12 +1,16 @@
 <template>
-  <div class="container" v-bind:style="this.$props.webMuxWindow.getWindowStyle">
-    <p>I am a mux window</p>
+  <div v-bind:style="this.$props.webMuxWindow.getWindowStyle">
+    <div>
+      windowId: {{ this.$props.webMuxWindow.windowId }} <br />
+      windowIdx: {{ this.$props.webMuxWindow.windowIdx }} <br>
+      parentId: {{ this.$props.webMuxWindow.parentContainer.containerId || "NONE" }}
+      windowStyle: {{ this.$props.webMuxWindow.getWindowStyle() }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { WebMux } from "@/lib/WebMux.lib";
 import { MuxWindow, isMuxWindow } from "@/lib/MuxWindow.lib";
 import { MuxContainer, isMuxContainer } from "@/lib/MuxContainer.lib";
 
@@ -28,5 +32,3 @@ export default class MuxWindowComponent extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -28,16 +28,17 @@ body {
   background: black;
   color: white;
   font-family: "GnuUnifont";
-  display: table;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
 
 .simple-web-mux {
-  height: 75vh;
-  width: 75vw;
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  height: 70vh;
+  width: 70vw;
 }
 </style>

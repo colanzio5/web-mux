@@ -2,7 +2,7 @@ import { MuxWindow } from "@/lib/MuxWindow.lib";
 import { WebMux } from "./WebMux.lib";
 import { v4 as uuid } from "uuid";
 
-export type MuxContainerChildren = MuxContainer[] | MuxWindow[];
+export type MuxContainerChild = MuxContainer | MuxWindow;
 
 export enum ContainerDirectionEnum {
   VERTICAL = "VERTICAL",
@@ -15,22 +15,30 @@ export class MuxContainer {
   parentMux: WebMux;
 
   // container dimensions
-  containerLeftOffset!: number;
-  containerTopOffset!: number;
-  containerWidth!: number;
-  containerHeight!: number;
+  containerLeftOffset: number;
+  containerTopOffset: number;
+  containerWidth: number;
+  containerHeight: number;
 
   // container tree properties
   containerId: string; // uuid
   containerIdx: number; // position
   direction: ContainerDirectionEnum = ContainerDirectionEnum.UNSPECIFIED;
-  containerChildren: MuxContainerChildren = [new MuxWindow(this, 0)];
+  containerChildren: MuxContainerChild[] = [];
 
   constructor(parentMux: WebMux, containerRef: Element, containerIdx: number) {
-    this.containerId = uuid();
-    this.resizeContainer(containerRef);
+    // create a refrence to the root webmux instance
     this.parentMux = parentMux;
+    // unique id and position in row or column
+    this.containerId = uuid();
     this.containerIdx = containerIdx;
+    // set the container size
+    this.containerLeftOffset = containerRef.getBoundingClientRect().left;
+    this.containerTopOffset = containerRef.getBoundingClientRect().top;
+    this.containerWidth = containerRef.clientWidth;
+    this.containerHeight = containerRef.clientHeight;
+    // create one mux window by default
+    this.containerChildren.push(new MuxWindow(this, 0));
   }
 
   getNumberContainerItems(): number {
@@ -85,6 +93,7 @@ export class MuxContainer {
   }
 }
 
+// todo: this should somehow check agains all MuxContainer required properties
 export function isMuxContainer(
   objectToCheck: unknown
 ): objectToCheck is MuxContainer {
