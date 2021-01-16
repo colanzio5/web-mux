@@ -3,7 +3,7 @@
     <div>
       windowId: {{ this.$props.webMuxWindow.windowId }} <br />
       windowIdx: {{ this.$props.webMuxWindow.windowIdx }} <br>
-      parentId: {{ this.$props.webMuxWindow.parentContainer.containerId || "NONE" }}
+      parentId: {{ this.$props.webMuxWindow.parentContainer.containerId || "NONE" }} <br>
       windowStyle: {{ this.$props.webMuxWindow.getWindowStyle() }}
     </div>
   </div>
