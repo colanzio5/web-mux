@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container" v-bind:style="this.$props.webMuxContainer.get">
     <!-- display all the container children [either other mux containers or mux windows] -->
-    <div v-for="child of this.$props.children" :key="child.id">
-      <MuxContainerComponent v-if="isMuxContainer(child)"/>  
-      <MuxWindowComponent v-if="isMuxWindow(child)"/>
+    <div v-for="child of this.$props.containerChildren" :key="child.id">
+        <MuxContainerComponent v-if="isMuxContainer(child)" :webMuxContainer="child" />
+        <MuxWindowComponent v-if="isMuxWindow(child)" :webMuxWindow="child" />
       <div v-else>Something Went Wrong...</div>
     </div>
   </div>
@@ -23,15 +23,22 @@ import { MuxContainer, isMuxContainer } from "@/lib/MuxContainer.lib";
     MuxContainerComponent
   },
   props: {
-    webMuxContainer: MuxContainer,
+    webMuxContainer: Object,
     resizeCallback: Function,
     keydownCallback: Function
+  },
+  // alias these helper functions onto vue vm
+  methods: {
+    isMuxContainer: isMuxContainer,
+    isMuxWindow: isMuxWindow,
   }
 })
 export default class MuxComponent extends Vue {
   webMux!: WebMux;
   selectedWindow!: MuxWindow;
+
+  mounted() {
+    console.log("MuxContainerComponent", this.$props.webMuxContainer)
+  }
 }
 </script>
-
-<style lang="scss" scoped></style>

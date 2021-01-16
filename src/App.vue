@@ -1,31 +1,43 @@
 <template>
-  <router-view />
+  <div class="simple-web-mux"><SimpleWebMux /></div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SimpleWebMux from "@/views/SimpleWebMux.vue"
+import SimpleWebMux from "@/views/SimpleWebMux.vue";
 
+@Component({
+  components: {
+    SimpleWebMux
+  }
+})
 export default class App extends Vue {}
 </script>
 
 <style lang="scss">
-html,
-body {
-  background: black;
-  color: white;
+@font-face {
+  font-family: "GnuUnifont";
+  src: local("GnuUnifont"),
+    url("./assets/GnuUnifontFull-Pm9P.ttf") format("truetype");
 }
 
-#nav {
-  padding: 30px;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  color: white;
+  font-family: "GnuUnifont";
+  display: table;
+  height: 100vh;
+  width: 100vw;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.simple-web-mux {
+  height: 75vh;
+  width: 75vw;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
 }
 </style>
