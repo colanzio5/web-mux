@@ -1,11 +1,9 @@
 <template>
-  <div v-bind:style="this.$props.webMuxWindow.getWindowStyle">
-    <div>
-      windowId: {{ this.$props.webMuxWindow.windowId }} <br />
-      windowIdx: {{ this.$props.webMuxWindow.windowIdx }} <br>
-      parentId: {{ this.$props.webMuxWindow.parentContainer.containerId || "NONE" }} <br>
-      windowStyle: {{ this.$props.webMuxWindow.getWindowStyle() }}
-    </div>
+  <div :style="this.$props.webMuxWindow.getWindowStyle(this.$props.windowIdx)">
+    windowIdx: {{ this.$props.webMuxWindow.windowIdx }} <br />
+    windowId: {{ this.$props.webMuxWindow.windowId }} <br />
+    parentId:
+    {{ this.$props.webMuxWindow.parentContainer.containerId || "NONE" }}
   </div>
 </template>
 
@@ -17,6 +15,7 @@ import { MuxContainer, isMuxContainer } from "@/lib/MuxContainer.lib";
 @Component({
   props: {
     webMuxWindow: Object,
+    windowIdx: Number,
     resizeCallback: Function,
     keydownCallback: Function
   },
@@ -26,9 +25,5 @@ import { MuxContainer, isMuxContainer } from "@/lib/MuxContainer.lib";
     isMuxWindow: isMuxWindow
   }
 })
-export default class MuxWindowComponent extends Vue {
-  mounted() {
-    console.log("MuxWindowComponent", this.$props.webMuxWindow);
-  }
-}
+export default class MuxWindowComponent extends Vue {}
 </script>

@@ -1,25 +1,23 @@
 <template>
-  <div class="mux-component">
-    <!-- show the root container of the webmux 
-    class we inject into the component -->
-    <div ref="root" class="root">
-      <div v-if="isRootElementMounted()">
-        <div
-          v-for="child of this.webMux.root.containerChildren"
-          :key="child.id"
-        >
-          <MuxContainerComponent
-            v-if="isMuxContainer(child)"
-            :webMuxContainer="child"
-          />
-          <MuxWindowComponent v-if="isMuxWindow(child)" :webMuxWindow="child" />
-          <div v-else>Something Went Wrong...</div>
-        </div>
+  <div ref="container" class="root">
+    <div v-if="isRootElementMounted()">
+      <div
+        v-for="(child, index) in this.webMux.root.containerChildren"
+        :key="child.id"
+      >
+        <MuxContainerComponent
+          v-if="isMuxContainer(child)"
+          :webMuxContainer="child"
+          :containerIdx="index"
+        />
+        <MuxWindowComponent
+          v-if="isMuxWindow(child)"
+          :webMuxWindow="child"
+          :windowIdx="index"
+        />
+        <div v-else>Something Went Wrong...</div>
       </div>
     </div>
-    <!-- tmux like status bar (window selection, 
-    links to visual configuration for component? ) -->
-    <div class="status-bar">status-bar</div>
   </div>
 </template>
 
@@ -35,10 +33,6 @@ import { isMuxContainer } from "@/lib/MuxContainer.lib";
   components: {
     MuxWindowComponent,
     MuxContainerComponent
-  },
-  props: {
-    resizeCallback: Function,
-    keydownCallback: Function
   },
   // alias these lib helper functions onto vue vm
   methods: {
@@ -58,22 +52,18 @@ export default class MuxComponent extends Vue {
 
   mounted() {
     // create the instance of the webmux class
-    const rootContainerRef = this.$refs.root as Element;
+    const rootContainerRef = this.$refs.container as Element;
     // todo: make a helper function that takes the root element and mounts it, use constructor before root is created
     this.webMux = new WebMux(rootContainerRef);
-    // overload the default behavior if props are given
-    this.$props.resizeCallback &&
-      window.addEventListener("resize", this.$props.resizeCallback);
-    this.$props.keydownCallback &&
-      window.addEventListener("keydown", this.$props.keydownCallback);
+    // todo: overload the default behavior only if props are given
+    window.addEventListener("resize", this.resizeCallback);
+    window.addEventListener("keydown", this.keydownCallback);
   }
 
   destroyed() {
     // remove the given props/listeners if props are given
-    this.$props.resizeCallback &&
-      window.removeEventListener("resize", this.$props.resizeCallback);
-    this.$props.keydownCallback &&
-      window.removeEventListener("keydown", this.$props.keydownCallback);
+    window.removeEventListener("resize", this.resizeCallback);
+    window.removeEventListener("keydown", this.keydownCallback);
   }
 
   // helper function to determine if root element
@@ -83,29 +73,35 @@ export default class MuxComponent extends Vue {
       this.webMux && this.webMux.root && this.webMux.root.containerChildren
     );
   }
+
+  resizeCallback() {
+    this.webMux.root.resizeContainer(this.$refs.container as Element);
+  }
+
+  // todo: overload starting height and width
+  // todo: add additional callback to resize events
+  // example of overwriting the components
+  // keyboard behavior
+  // ! this should be a key value object
+  keydownCallback(event: KeyboardEvent) {
+    // key codes (https://keycode.info/)
+    // prevent default - https://github.com/iFgR/vue-shortkey/issues/71
+    if (event.ctrlKey || event.metaKey) {
+      switch (event.which || event.keyCode) {
+        default:
+          break;
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.mux-component {
-  border: 1px solid greenyellow;
-  height: 100%;
-  width: 100%;
-  padding: 5px;
-  // ensure that the root and status bar are
-  // layed out correctly
-  display: flex;
-  flex-direction: column;
-}
 
 .root {
   border: 1px solid red;
-  height: fill;
+  height: stretch;
+  width: stretch;
 }
 
-.status-bar {
-  border: 1px solid blue;
-  margin-top: 5px;
-  height: max-content;
-}
 </style>

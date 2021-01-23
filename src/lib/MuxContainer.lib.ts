@@ -22,23 +22,23 @@ export class MuxContainer {
 
   // container tree properties
   containerId: string; // uuid
-  containerIdx: number; // position
-  direction: ContainerDirectionEnum = ContainerDirectionEnum.UNSPECIFIED;
+  direction: ContainerDirectionEnum = ContainerDirectionEnum.VERTICAL;
   containerChildren: MuxContainerChild[] = [];
 
-  constructor(parentMux: WebMux, containerRef: Element, containerIdx: number) {
+  constructor(parentMux: WebMux, containerRef: Element) {
     // create a refrence to the root webmux instance
     this.parentMux = parentMux;
     // unique id and position in row or column
     this.containerId = uuid();
-    this.containerIdx = containerIdx;
     // set the container size
     this.containerLeftOffset = containerRef.getBoundingClientRect().left;
     this.containerTopOffset = containerRef.getBoundingClientRect().top;
     this.containerWidth = containerRef.clientWidth;
     this.containerHeight = containerRef.clientHeight;
     // create one mux window by default
-    this.containerChildren.push(new MuxWindow(this, 0));
+    this.containerChildren.push(new MuxWindow(this));
+    this.containerChildren.push(new MuxWindow(this));
+    this.containerChildren.push(new MuxWindow(this));
   }
 
   getNumberContainerItems(): number {
@@ -60,30 +60,29 @@ export class MuxContainer {
     throw new Error("Not Implemented!");
   }
 
-  getContainerStyle() {
+  getContainerStyle(containerChildIdx: number) {
     const numberContainerItems = this.getNumberContainerItems();
     switch (this.direction) {
       case ContainerDirectionEnum.UNSPECIFIED:
         return {
-          width: this.containerWidth,
-          height: this.containerHeight,
-          top: this.containerTopOffset,
-          left: this.containerLeftOffset
+          width: (this.containerWidth) + "px",
+          height: (this.containerHeight) + "px",
+          top: (this.containerTopOffset) + "px",
+          left: (this.containerLeftOffset) + "px"
         };
       case ContainerDirectionEnum.VERTICAL:
         return {
-          width: this.containerWidth,
-          height: this.containerHeight / numberContainerItems,
-          top:
-            (this.containerHeight / numberContainerItems) * this.containerIdx,
-          left: this.containerLeftOffset
+          width: (this.containerWidth) + "px",
+          height: (this.containerHeight / numberContainerItems) + "px",
+          top: ((this.containerHeight / numberContainerItems) * containerChildIdx) + "px",
+          left: (this.containerLeftOffset) + "px"
         };
       case ContainerDirectionEnum.HORIZONTAL:
         return {
-          width: this.containerWidth / numberContainerItems,
-          height: this.containerHeight,
-          top: this.containerTopOffset,
-          left: (this.containerWidth / numberContainerItems) * this.containerIdx
+          width: (this.containerWidth / numberContainerItems) + "px",
+          height: (this.containerHeight) + "px",
+          top: (this.containerTopOffset) + "px",
+          left: ((this.containerWidth / numberContainerItems) * containerChildIdx) + "px"
         };
       default:
         throw new Error(
@@ -97,7 +96,6 @@ export class MuxContainer {
 export function isMuxContainer(
   objectToCheck: unknown
 ): objectToCheck is MuxContainer {
-  console.log("isMuxContainer", objectToCheck);
   return (objectToCheck as MuxContainer).containerId !== undefined;
 }
 

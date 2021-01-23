@@ -1,14 +1,14 @@
 <template>
-  <div class="simple-web-mux"><SimpleWebMux /></div>
+  <div class="simple-web-mux"><MuxComponent /></div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SimpleWebMux from "@/views/SimpleWebMux.vue";
-
+import { WebMux } from "@/lib/WebMux.lib";
+import MuxComponent from "@/components/MuxComponent.vue";
 @Component({
   components: {
-    SimpleWebMux
+    MuxComponent
   }
 })
 export default class App extends Vue {}

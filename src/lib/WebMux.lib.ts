@@ -7,7 +7,7 @@ export class WebMux {
   // component level constructor 
   // [i.e. called after root element has been created]
   constructor(rootContainerRef: Element) {
-    this.root = new MuxContainer(this, rootContainerRef, 0);
+    this.root = new MuxContainer(this, rootContainerRef);
   }
 
   // make selected windows smaller in width

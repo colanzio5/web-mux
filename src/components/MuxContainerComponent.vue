@@ -1,9 +1,20 @@
 <template>
-  <div class="container" v-bind:style="this.$props.webMuxContainer.get">
+  <div class="container" ref="container" :style="getContainerStyle()">
     <!-- display all the container children [either other mux containers or mux windows] -->
-    <div v-for="child of this.$props.containerChildren" :key="child.id">
-        <MuxContainerComponent v-if="isMuxContainer(child)" :webMuxContainer="child" />
-        <MuxWindowComponent v-if="isMuxWindow(child)" :webMuxWindow="child" />
+    <div
+      v-for="(child, index) in this.$props.webMuxContainer.containerChildren"
+      :key="child.id"
+    >
+      <MuxContainerComponent
+        v-if="isMuxContainer(child)"
+        :webMuxContainer="child"
+        :containerIdx="index"
+      />
+      <MuxWindowComponent
+        v-if="isMuxWindow(child)"
+        :webMuxWindow="child"
+        :windowIdx="index"
+      />
       <div v-else>Something Went Wrong...</div>
     </div>
   </div>
@@ -24,13 +35,12 @@ import { MuxContainer, isMuxContainer } from "@/lib/MuxContainer.lib";
   },
   props: {
     webMuxContainer: Object,
-    resizeCallback: Function,
-    keydownCallback: Function
+    containerIdx: Number,
   },
   // alias these helper functions onto vue vm
   methods: {
     isMuxContainer: isMuxContainer,
-    isMuxWindow: isMuxWindow,
+    isMuxWindow: isMuxWindow
   }
 })
 export default class MuxComponent extends Vue {
@@ -38,7 +48,24 @@ export default class MuxComponent extends Vue {
   selectedWindow!: MuxWindow;
 
   mounted() {
-    console.log("MuxContainerComponent", this.$props.webMuxContainer)
+    window.addEventListener("resize", this.$props.resizeCallback);
+    window.addEventListener("keydown", this.$props.keydownCallback);
+  }
+  destroyed() {
+    // remove the given props/listeners if props are given
+    window.removeEventListener("resize", this.$props.resizeCallback);
+    window.removeEventListener("keydown", this.$props.keydownCallback);
+  }
+
+  resizeCallback() {
+    this.webMux.root.resizeContainer(this.$refs.container as Element);
+  }
+
+  getContainerStyle() {
+    const style = this.$props.webMuxContainer.getContainerStyle(
+      this.$props.containerIdx
+    );
+    return style;
   }
 }
 </script>
