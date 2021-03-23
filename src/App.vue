@@ -1,27 +1,42 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="root" ref="root">
+    <Container :index="index" :id="id" :parent="parent"/>
+  </div>
+  <button>split</button>
+  <button>reset</button>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "./components/HelloWorld.vue";
+<script>
+import Container from "./components/Container.vue";
+import { v4 as uuid } from "uuid";
 
-@Options({
+export default {
+  name: "App",
   components: {
-    HelloWorld,
+    Container,
   },
-})
-export default class App extends Vue {}
+  methods: {
+    uuid: uuid,
+  },
+  data() {
+    return {
+      index: Number(0),
+      id: uuid(),
+      parent: {
+        id: "root"
+      },
+    };
+  }
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.root {
+  position: absolute;
+  border: 1px solid red;
+  height: 50vh;
+  width: 50vw;
+  left: 50px;
+  top: 50px;
 }
 </style>
