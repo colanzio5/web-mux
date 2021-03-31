@@ -49,7 +49,11 @@ export function getContainerSizeCSS(
 export function getContainerMemberIds(container: Container): string[] {
   // from https://stackoverflow.com/questions/54245284/recursive-map-function
   const transform = ({ id, children }: Container): string[] => {
-    return [id, ...transformAll(children)];
+    const member: string [] = [];
+    // only process as member if isWindow
+    // i.e. children.length == 0
+    if(children.length == 0) member.push(id);
+    return [ ...member, ...transformAll(children)];
   };
   const transformAll = (children: Container[]) => {
     return children.flatMap((c: Container) => transform(c));
