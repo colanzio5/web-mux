@@ -2,7 +2,9 @@
   <!-- check if data is loaded -->
   <div v-if="container.children" :style="getContainerStyle">
     <!-- if the container has no children, we render the window (recursive break) -->
-    <div v-if="container.children.length == 0" :style="getWindowStyle"></div>
+    <div v-if="container.children.length == 0" :style="getWindowStyle">
+      <div style="color: white;">{{container.id}}</div>
+    </div>
     <!-- if container has children, render the children -->
     <Container
       v-else
@@ -22,41 +24,26 @@ import { Vue, Options } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import {
   Container,
-  getContainerSizeAsCSS,
   CONTAINER_BORDER_SIZE,
   CONTAINER_BORDER_COLOR,
   WINDOW_BORDER_SIZE,
   WINDOW_BORDER_COLOR,
+  getContainerCSS,
 } from "../lib/container/container.lib";
 
 @Options({
   name: "Container",
 })
 export default class ContainerComponent extends Vue {
-  @Prop({ required: true }) index!: number;
   @Prop({ required: true }) container!: Container;
   @Prop({ required: true }) parentContainer!: Container;
-
-  mounted(): void {
-    this.resizeContainer({} as Event);
-    window.addEventListener("resize", this.resizeContainer);
-  }
-
-  beforeDestroy() {
-    window.addEventListener("resize", this.resizeContainer);
-  }
-
-  // todo: this shouldn't have to be called, should be reactive,
-  // todo: or at least be triggered by parent event call
-  resizeContainer(_: Event) {
-    console.log("setting size of container from resize event", this.container);
-  }
 
   get getContainerStyle(): CSSProperties {
     const containerStyle: CSSProperties = {
       border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
       boxSizing: "border-box",
-      ...getContainerSizeAsCSS(this.container, this.parentContainer),
+      verticalAlign: "top", // required to keep window styles from shifting when contents are added
+      ...getContainerCSS(this.container, this.parentContainer),
     };
     console.log("get container style...", containerStyle);
     return containerStyle;
