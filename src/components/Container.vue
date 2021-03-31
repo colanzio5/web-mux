@@ -3,7 +3,7 @@
   <div v-if="container.children" :style="getContainerStyle">
     <!-- if the container has no children, we render the window (recursive break) -->
     <div v-if="container.children.length == 0" :style="getWindowStyle">
-      <div style="color: white;">{{container.id}}</div>
+      <div style="color: white">{{ container.id }}</div>
     </div>
     <!-- if container has children, render the children -->
     <Container
@@ -27,7 +27,7 @@ import {
   CONTAINER_BORDER_COLOR,
   WINDOW_BORDER_SIZE,
   WINDOW_BORDER_COLOR,
-  getContainerCSS,
+  getContainerSizeCSS,
 } from "../lib/container/container.lib";
 
 @Options({
@@ -38,13 +38,16 @@ export default class ContainerComponent extends Vue {
   @Prop({ required: true }) parentContainer!: Container;
 
   get getContainerStyle(): CSSProperties {
+    const containerSizeCSS: CSSProperties = getContainerSizeCSS(
+      this.container,
+      this.parentContainer
+    );
     const containerStyle: CSSProperties = {
       border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
       boxSizing: "border-box",
       verticalAlign: "top", // required to keep window styles from shifting when contents are added
-      ...getContainerCSS(this.container, this.parentContainer),
+      ...containerSizeCSS,
     };
-    console.log("get container style...", containerStyle);
     return containerStyle;
   }
 
@@ -55,7 +58,6 @@ export default class ContainerComponent extends Vue {
       height: "100%",
       width: "100%",
     };
-    console.log("get window style...", windowStyle);
     return windowStyle;
   }
 

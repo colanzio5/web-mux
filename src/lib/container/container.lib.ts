@@ -15,7 +15,7 @@ export type Container = {
   parentContainer?: Container;
 };
 
-export function getContainerCSS(
+export function getContainerSizeCSS(
   container: Container,
   parentContainer: Container
 ): CSSProperties {
