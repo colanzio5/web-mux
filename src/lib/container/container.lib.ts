@@ -15,22 +15,28 @@ export type Container = {
   parentContainer?: Container;
 };
 
+export enum ContainerDirection {
+  VERTICAL = "VERTICAL",
+  HORIZONTAL = "HORIZONTAL",
+  UNDEFINED = "UNDEFINED",
+}
+
 export function getContainerSizeCSS(
   container: Container,
   parentContainer: Container
 ): CSSProperties {
   const containerCSS: CSSProperties = {};
   switch (parentContainer.direction) {
-    case "VERTICAL":
+    case ContainerDirection.VERTICAL:
       containerCSS.display = "inline-block"; // required only for the vertical case
       containerCSS.height = "100%";
       containerCSS.width = container.scale * 100 + "%";
       break;
-    case "HORIZONTAL":
+    case ContainerDirection.HORIZONTAL:
       containerCSS.height = container.scale * 100 + "%";
       containerCSS.width = "100%";
       break;
-    case "UNDEFINED":
+    case ContainerDirection.UNDEFINED:
       containerCSS.height = "100%";
       containerCSS.width = "100%";
       break;
@@ -38,4 +44,15 @@ export function getContainerSizeCSS(
       console.error("container defined is in an undefined case...");
   }
   return containerCSS;
+}
+
+export function getContainerMemberIds(container: Container): string[] {
+  // from https://stackoverflow.com/questions/54245284/recursive-map-function
+  const transform = ({ id, children }: Container): string[] => {
+    return [id, ...transformAll(children)];
+  };
+  const transformAll = (children: Container[]) => {
+    return children.flatMap((c: Container) => transform(c));
+  };
+  return transformAll([container]);
 }
