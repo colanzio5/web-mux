@@ -8,9 +8,8 @@
     <!-- if container has children, render the children -->
     <Container
       v-else
-      v-for="(child, idx) in container.children"
-      :key="idx"
-      :index="idx"
+      v-for="child of container.children"
+      :key="child.id"
       :container="child"
       :parentContainer="container"
     />

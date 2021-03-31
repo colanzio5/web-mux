@@ -1,7 +1,6 @@
 <template>
   <div class="root" ref="root">
     <ContainerComponent
-      :index="container.index"
       :id="container.id"
       :container="container"
       :parentContainer="container.parentContainer"
