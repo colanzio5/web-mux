@@ -1,9 +1,9 @@
 import { CSSProperties } from "@vue/runtime-dom";
 
 export const CONTAINER_BORDER_SIZE = 1;
-export const WINDOW_BORDER_SIZE = 1;
+export const WINDOW_BORDER_SIZE = 2;
 export const CSS_PADDING_PIXEL_SIZE = 0;
-export const CONTAINER_BORDER_COLOR = "yellow";
+export const CONTAINER_BORDER_COLOR = "cyan";
 export const WINDOW_BORDER_COLOR = "yellow";
 
 export type ContainerSize = {

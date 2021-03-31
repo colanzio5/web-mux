@@ -54,8 +54,8 @@ export default class ContainerComponent extends Vue {
 
   get getContainerStyle(): CSSProperties {
     const containerStyle: CSSProperties = {
-      boxSizing: "border-box",
       border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
+      boxSizing: "border-box",
       ...getContainerSizeAsCSS(this.container, this.parentContainer),
     };
     console.log("get container style...", containerStyle);
@@ -64,7 +64,6 @@ export default class ContainerComponent extends Vue {
 
   get getWindowStyle(): CSSProperties {
     const windowStyle: CSSProperties = {
-      position: "relative",
       border: `${WINDOW_BORDER_SIZE}px solid ${WINDOW_BORDER_COLOR}`,
       boxSizing: "border-box",
       height: "100%",

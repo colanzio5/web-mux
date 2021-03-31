@@ -22,7 +22,7 @@ import { TEST_CONTAINERS } from "./lib/container/container.mocks"
   },
 })
 export default class App extends Vue {
-  container: Container = TEST_CONTAINERS[1];
+  container: Container = TEST_CONTAINERS[2];
 
   mounted(): void {
     window.addEventListener("resize", this.resizeRootContainer);
