@@ -23,10 +23,11 @@ import { Prop } from "vue-property-decorator";
 import {
   Container,
   getContainerSizeAsCSS,
-  getContainerSize,
-  ContainerSize,
-  CSS_BORDER_PIXEL_SIZE,
-} from "../lib/container.lib";
+  CONTAINER_BORDER_SIZE,
+  CONTAINER_BORDER_COLOR,
+  WINDOW_BORDER_SIZE,
+  WINDOW_BORDER_COLOR,
+} from "../lib/container/container.lib";
 
 @Options({
   name: "Container",
@@ -45,43 +46,26 @@ export default class ContainerComponent extends Vue {
     window.addEventListener("resize", this.resizeContainer);
   }
 
-  // todo: this shouldn't have to be called, should be reactive, 
+  // todo: this shouldn't have to be called, should be reactive,
   // todo: or at least be triggered by parent event call
-  resizeContainer(event: Event) {
-    this.container.size = getContainerSize(
-      this.container,
-      this.parentContainer
-    );
-    console.log(
-      "setting size of container from resize event",
-      this.container,
-      event
-    );
+  resizeContainer(_: Event) {
+    console.log("setting size of container from resize event", this.container);
   }
 
   get getContainerStyle(): CSSProperties {
-    const containerSize: ContainerSize = getContainerSize(
-      this.container,
-      this.parentContainer
-    );
     const containerStyle: CSSProperties = {
-      position: "absolute",
-      border: `${CSS_BORDER_PIXEL_SIZE}px solid green`,
-      // boxSizing: "border-box",
-      ...getContainerSizeAsCSS(containerSize),
+      boxSizing: "border-box",
+      border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
+      ...getContainerSizeAsCSS(this.container, this.parentContainer),
     };
     console.log("get container style...", containerStyle);
     return containerStyle;
   }
 
   get getWindowStyle(): CSSProperties {
-    const containerSize: ContainerSize = getContainerSize(
-      this.container,
-      this.parentContainer
-    );
     const windowStyle: CSSProperties = {
       position: "relative",
-      border: `${CSS_BORDER_PIXEL_SIZE}px solid pink`,
+      border: `${WINDOW_BORDER_SIZE}px solid ${WINDOW_BORDER_COLOR}`,
       boxSizing: "border-box",
       height: "100%",
       width: "100%",

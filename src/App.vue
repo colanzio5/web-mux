@@ -7,21 +7,14 @@
       :parentContainer="container.parentContainer"
     />
   </div>
-  <button>split</button>
-  <button>reset</button>
 </template>
 
 <script lang="ts">
 import "reflect-metadata";
 import { Vue, Options } from "vue-class-component";
 import ContainerComponent from "./components/Container.vue";
-import {
-  Container,
-  ContainerSize,
-  getContainerSize,
-  DEFAULT_CONTAINER,
-  getContainerSizeAsCSS,
-} from "./lib/container.lib";
+import { Container, ContainerSize } from "./lib/container/container.lib";
+import { TEST_CONTAINERS } from "./lib/container/container.mocks"
 
 @Options({
   components: {
@@ -29,58 +22,43 @@ import {
   },
 })
 export default class App extends Vue {
-  container: Container = DEFAULT_CONTAINER;
+  container: Container = TEST_CONTAINERS[1];
 
   mounted(): void {
-    this.resizeRootContainer({} as Event);
     window.addEventListener("resize", this.resizeRootContainer);
+    this.resizeRootContainer({} as Event);
   }
 
   beforeDestroy() {
     window.addEventListener("resize", this.resizeRootContainer);
   }
 
-  resizeRootContainer(event: Event) {
+  resizeRootContainer(_: Event): void {
     const rootRef: HTMLElement = this.$refs.root as HTMLElement;
-    const rootElementSize: ContainerSize = {
+    const containerSize: ContainerSize = {
       height: rootRef.clientHeight,
       width: rootRef.clientWidth,
       left: rootRef.clientLeft,
       top: rootRef.clientTop,
     };
-    const parentContainerSize = getContainerSize(
-      this.container.parentContainer as Container,
-      {
-        index: 0,
-        id: "ROOT_PARENT",
-        direction: "UNDEFINED",
-        scale: 1.0,
-        size: rootElementSize,
-        children: [],
-      }
-    );
-    (this.container.parentContainer as Container).size = parentContainerSize;
-
-    this.container.size = getContainerSize(
-      this.container,
-      this.container.parentContainer as Container
-    );
-    console.log(
-      "setting size of container from resize event",
-      this.container,
-      event
-    );
+    // todo: we have to do this if statement
+    // because parentContainer is defined as | undefined in type
+    if (this.container.parentContainer)
+      this.container.parentContainer.size = containerSize;
+    this.container.size = containerSize;
   }
 }
 </script>
 
 <style>
 .root {
+  background: black;
   position: absolute;
-  border: 2px solid purple;
-  height: 50vh;
-  width: 70vw;
-  left: 50px;
-  top: 50px;
+  box-sizing: border-box;
+  /* border: 1px solid yellow; */
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
 }
 </style>
