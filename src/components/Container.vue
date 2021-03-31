@@ -1,86 +1,96 @@
 <template>
-  <!-- if the container has no children, we render the window (recursive break) -->
-  <div
-    v-if="this.children && !isContainerParent()"
-    :style="getWindowStyle()"
-    class="window"
-  ></div>
-  <!-- if container has children, render the children -->
-  <Container
-    v-else
-    :style="getContainerStyle(idx)"
-    v-for="(child, idx) in this.children"
-    :key="child.id"
-    :id="child.id"
-    :index="idx"
-    :parent="this"
-  />
+  <!-- check if data is loaded -->
+  <div v-if="container.children" :style="getContainerStyle">
+    <!-- if the container has no children, we render the window (recursive break) -->
+    <div v-if="container.children.length == 0" :style="getWindowStyle"></div>
+    <!-- if container has children, render the children -->
+    <Container
+      v-else
+      v-for="(child, idx) in container.children"
+      :key="idx"
+      :index="idx"
+      :container="child"
+      :parentContainer="container"
+    />
+  </div>
 </template>
 
 <script lang="ts">
+import { CSSProperties } from "@vue/runtime-dom";
 import "reflect-metadata";
-import { v4 as uuid } from "uuid";
-import { Vue, Options} from "vue-class-component";
-import { Component, Prop } from "vue-property-decorator";
-
-type Container = {
-  id: String;
-  children: Container[];
-  size: {
-    height?: number;
-    width?: number;
-    left?: number;
-    top?: number;
-  };
-};
+import { Vue, Options } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import {
+  Container,
+  getContainerSizeAsCSS,
+  getContainerSize,
+  ContainerSize,
+  CSS_BORDER_PIXEL_SIZE,
+} from "../lib/container.lib";
 
 @Options({
   name: "Container",
 })
 export default class ContainerComponent extends Vue {
-  @Prop() index: Number;
-  @Prop() id: String;
-  @Prop() container: Container;
-  @Prop() parentContainer: Container;
+  @Prop({ required: true }) index!: number;
+  @Prop({ required: true }) container!: Container;
+  @Prop({ required: true }) parentContainer!: Container;
 
-  mounted() {
-    this.setContainerSize();
-    addEventListener("resize", this.setContainerSize);
+  mounted(): void {
+    this.resizeContainer({} as Event);
+    window.addEventListener("resize", this.resizeContainer);
   }
 
-  setContainerSize() {
-    if (this.parentContainer.id === "root") {
-      this.container.size = this.sizeFromElement(this.$parent.$refs.root);
-      this.container.children = [{ id: uuid(), size: {}, children: [] }, { id: uuid(), size: {}, children: [] }];
-      console.log("set root container from root ref...", this.container.size);
-    } else {
-      this.calculateContainerSize();
-      console.log("set child container using parent ref...", this.container.size);
-    }
+  beforeDestroy() {
+    window.addEventListener("resize", this.resizeContainer);
   }
 
-  calculateContainerSize() {
+  // todo: this shouldn't have to be called, should be reactive, 
+  // todo: or at least be triggered by parent event call
+  resizeContainer(event: Event) {
+    this.container.size = getContainerSize(
+      this.container,
+      this.parentContainer
+    );
     console.log(
-      "calculating container size...",
-      this.parentContainer,
-      this.index
-    );``
-  }
-  getContainerStyle(index) {
-    const parentSize = this.sizeFromElement(this.$refs.parent.id);
-    console.log("getContainerSize", index, parentSize);
+      "setting size of container from resize event",
+      this.container,
+      event
+    );
   }
 
-  getWindowStyle() {
-    return {
-      height: this.container.size.height + "px",
-      width: this.container.size.width + "px",
-      top: this.container.size.top + "px",
-      left: this.container.size.left + "px",
+  get getContainerStyle(): CSSProperties {
+    const containerSize: ContainerSize = getContainerSize(
+      this.container,
+      this.parentContainer
+    );
+    const containerStyle: CSSProperties = {
+      position: "absolute",
+      border: `${CSS_BORDER_PIXEL_SIZE}px solid green`,
+      // boxSizing: "border-box",
+      ...getContainerSizeAsCSS(containerSize),
     };
+    console.log("get container style...", containerStyle);
+    return containerStyle;
   }
 
-  splitContainer(direction) {
+  get getWindowStyle(): CSSProperties {
+    const containerSize: ContainerSize = getContainerSize(
+      this.container,
+      this.parentContainer
+    );
+    const windowStyle: CSSProperties = {
+      position: "relative",
+      border: `${CSS_BORDER_PIXEL_SIZE}px solid pink`,
+      boxSizing: "border-box",
+      height: "100%",
+      width: "100%",
+    };
+    console.log("get window style...", windowStyle);
+    return windowStyle;
+  }
+
+  splitContainer(direction: "VERTICAL" | "HORIZONTAL" | "UNDEFINED"): void {
     console.log("splitContainer", direction);
     switch (direction) {
       case "VERTICAL":
@@ -93,30 +103,5 @@ export default class ContainerComponent extends Vue {
         console.error("splitContainer direction not instantiated...");
     }
   }
-
-  isContainerParent() {
-    const isContainerParent = this.container.children.length > 0;
-    console.log("isContainerParent", { ...this.container.children }, isContainerParent);
-    return isContainerParent;
-  }
-  
-  sizeFromElement(htmlElement) {
-    return {
-      height: htmlElement?.clientHeight || 0,
-      width: htmlElement?.clientWidth || 0,
-      left: htmlElement?.clientLeft || 0,
-      top: htmlElement?.clientTop || 0,
-    };
-  }
 }
 </script>
-
-<style scoped>
-.container {
-  border: 1px solid green;
-}
-
-.window {
-  border: 1px solid blue;
-}
-</style>

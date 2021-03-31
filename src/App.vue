@@ -1,41 +1,85 @@
 <template>
   <div class="root" ref="root">
-    <Container :index="index" :id="id" :parent="parent"/>
+    <ContainerComponent
+      :index="container.index"
+      :id="container.id"
+      :container="container"
+      :parentContainer="container.parentContainer"
+    />
   </div>
   <button>split</button>
   <button>reset</button>
 </template>
 
-<script>
-import Container from "./components/Container.vue";
-import { v4 as uuid } from "uuid";
+<script lang="ts">
+import "reflect-metadata";
+import { Vue, Options } from "vue-class-component";
+import ContainerComponent from "./components/Container.vue";
+import {
+  Container,
+  ContainerSize,
+  getContainerSize,
+  DEFAULT_CONTAINER,
+  getContainerSizeAsCSS,
+} from "./lib/container.lib";
 
-export default {
-  name: "App",
+@Options({
   components: {
-    Container,
+    ContainerComponent,
   },
-  methods: {
-    uuid: uuid,
-  },
-  data() {
-    return {
-      index: Number(0),
-      id: uuid(),
-      parent: {
-        id: "root"
-      },
-    };
+})
+export default class App extends Vue {
+  container: Container = DEFAULT_CONTAINER;
+
+  mounted(): void {
+    this.resizeRootContainer({} as Event);
+    window.addEventListener("resize", this.resizeRootContainer);
   }
-};
+
+  beforeDestroy() {
+    window.addEventListener("resize", this.resizeRootContainer);
+  }
+
+  resizeRootContainer(event: Event) {
+    const rootRef: HTMLElement = this.$refs.root as HTMLElement;
+    const rootElementSize: ContainerSize = {
+      height: rootRef.clientHeight,
+      width: rootRef.clientWidth,
+      left: rootRef.clientLeft,
+      top: rootRef.clientTop,
+    };
+    const parentContainerSize = getContainerSize(
+      this.container.parentContainer as Container,
+      {
+        index: 0,
+        id: "ROOT_PARENT",
+        direction: "UNDEFINED",
+        scale: 1.0,
+        size: rootElementSize,
+        children: [],
+      }
+    );
+    (this.container.parentContainer as Container).size = parentContainerSize;
+
+    this.container.size = getContainerSize(
+      this.container,
+      this.container.parentContainer as Container
+    );
+    console.log(
+      "setting size of container from resize event",
+      this.container,
+      event
+    );
+  }
+}
 </script>
 
 <style>
 .root {
   position: absolute;
-  border: 1px solid red;
+  border: 2px solid purple;
   height: 50vh;
-  width: 50vw;
+  width: 70vw;
   left: 50px;
   top: 50px;
 }
