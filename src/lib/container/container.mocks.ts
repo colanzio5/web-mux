@@ -20,19 +20,19 @@ export const TEST_CONTAINERS: Container[] = [
     children: [
       {
         id: uuid(),
-        direction: "HORIZONTAL",
+        direction: "UNDEFINED",
         scale: 1.0 / 3.0,
         children: [],
       },
       {
         id: uuid(),
-        direction: "HORIZONTAL",
+        direction: "UNDEFINED",
         scale: 1.0 / 3.0,
         children: [],
       },
       {
         id: uuid(),
-        direction: "HORIZONTAL",
+        direction: "UNDEFINED",
         scale: 1.0 / 3.0,
         children: [],
       },
@@ -51,13 +51,13 @@ export const TEST_CONTAINERS: Container[] = [
     children: [
       {
         id: uuid(),
-        direction: "HORIZONTAL",
+        direction: "UNDEFINED",
         scale: 1.0 / 3.0,
         children: [],
       },
       {
         id: uuid(),
-        direction: "HORIZONTAL",
+        direction: "UNDEFINED",
         scale: 1.0 / 3.0,
         children: [],
       },
@@ -68,19 +68,19 @@ export const TEST_CONTAINERS: Container[] = [
         children: [
           {
             id: uuid(),
-            direction: "VERTICAL",
+            direction: "UNDEFINED",
             scale: 1.0 / 3.0,
             children: [],
           },
           {
             id: uuid(),
-            direction: "VERTICAL",
+            direction: "UNDEFINED",
             scale: 1.0 / 3.0,
             children: [],
           },
           {
             id: uuid(),
-            direction: "VERTICAL",
+            direction: "UNDEFINED",
             scale: 1.0 / 3.0,
             children: [],
           },
@@ -112,13 +112,13 @@ export const TEST_CONTAINERS: Container[] = [
         children: [
           {
             id: uuid(),
-            direction: "HORIZONTAL",
+            direction: "UNDEFINED",
             scale: 1.0 / 2.0,
             children: [],
           },
           {
             id: uuid(),
-            direction: "HORIZONTAL",
+            direction: "UNDEFINED",
             scale: 1.0 / 2.0,
             children: [],
           },
