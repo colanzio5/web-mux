@@ -12,6 +12,7 @@
       :key="child.id"
       :container="child"
       :parentContainer="container"
+      :selectedContainerId="selectedContainerId"
     />
   </div>
 </template>
@@ -36,6 +37,7 @@ import {
 export default class ContainerComponent extends Vue {
   @Prop({ required: true }) container!: Container;
   @Prop({ required: true }) parentContainer!: Container;
+  @Prop({ required: false }) selectedContainerId!: string;
 
   get getContainerStyle(): CSSProperties {
     const containerSizeCSS: CSSProperties = getContainerSizeCSS(
@@ -52,13 +54,18 @@ export default class ContainerComponent extends Vue {
   }
 
   get getWindowStyle(): CSSProperties {
+    const windowColor = this.isWindowSelected ? "red" : WINDOW_BORDER_COLOR;
     const windowStyle: CSSProperties = {
-      border: `${WINDOW_BORDER_SIZE}px solid ${WINDOW_BORDER_COLOR}`,
+      border: `${WINDOW_BORDER_SIZE}px solid ${windowColor}`,
       boxSizing: "border-box",
       height: "100%",
       width: "100%",
     };
     return windowStyle;
+  }
+
+  get isWindowSelected() {
+    return this.selectedContainerId == this.container.id;
   }
 
   splitContainer(direction: "VERTICAL" | "HORIZONTAL" | "UNDEFINED"): void {

@@ -4,6 +4,7 @@
       :id="container.id"
       :container="container"
       :parentContainer="container.parentContainer"
+      :selectedContainerId="selectedContainerId"
     />
   </div>
 </template>
@@ -15,13 +16,16 @@ import ContainerComponent from "./components/Container.vue";
 import { Container } from "./lib/container/container.lib";
 import { TEST_CONTAINERS } from "./lib/container/container.mocks";
 
+
 @Options({
   components: {
     ContainerComponent,
   },
 })
 export default class App extends Vue {
+  // ! temp state assignment for testing/dev
   container: Container = TEST_CONTAINERS[2];
+  selectedContainerId?: string = TEST_CONTAINERS[2].children[0].id;
 }
 </script>
 
