@@ -1,138 +1,54 @@
 import { Container, ContainerDirection } from "./container.lib";
 
-import { v4 as uuid } from "uuid";
+const CONTAINER_HALVES = new Container({ scale: 1.0 / 2.0 });
+const CONTAINER_THIRDS = new Container({ scale: 1.0 / 3.0 });
+const ROOT_PARENT = new Container({ id: "ROOT_PARENT" });
+const ROOT_ID = "ROOT";
 
-export const DEFAULT_CONTAINER: Container = {
-  id: "ROOT",
-  children: [],
-  direction: ContainerDirection.HORIZONTAL,
-  scale: 1.0,
-  parentContainer: {
-    id: "ROOT_PARENT",
-    direction: ContainerDirection.UNDEFINED,
-    scale: 1.0,
-    children: [],
-  },
-};
+export const DEFAULT_CONTAINER = new Container({
+  id: ROOT_ID,
+  direction: ContainerDirection.UNDEFINED,
+  parentContainer: ROOT_PARENT,
+});
 
 export const TEST_CONTAINERS: Container[] = [
-  {
-    id: "ROOT",
-    children: [
-      {
-        id: uuid(),
-        direction: ContainerDirection.UNDEFINED,
-        scale: 1.0 / 3.0,
-        children: [],
-      },
-      {
-        id: uuid(),
-        direction: ContainerDirection.UNDEFINED,
-        scale: 1.0 / 3.0,
-        children: [],
-      },
-      {
-        id: uuid(),
-        direction: ContainerDirection.UNDEFINED,
-        scale: 1.0 / 3.0,
-        children: [],
-      },
-    ],
+  // test container 1
+  new Container({
+    id: ROOT_ID,
+    children: [CONTAINER_THIRDS, CONTAINER_THIRDS, CONTAINER_THIRDS],
     direction: ContainerDirection.HORIZONTAL,
-    scale: 1.0,
-    parentContainer: {
-      id: "ROOT_PARENT",
-      direction: ContainerDirection.UNDEFINED,
-      scale: 1.0,
-      children: [],
-    },
-  },
-  {
-    id: "ROOT",
+    parentContainer: ROOT_PARENT,
+  }),
+  // test container 2
+  new Container({
+    id: ROOT_ID,
     children: [
-      {
-        id: uuid(),
-        direction: ContainerDirection.UNDEFINED,
-        scale: 1.0 / 3.0,
-        children: [],
-      },
-      {
-        id: uuid(),
-        direction: ContainerDirection.UNDEFINED,
-        scale: 1.0 / 3.0,
-        children: [],
-      },
-      {
-        id: uuid(),
+      CONTAINER_THIRDS,
+      CONTAINER_THIRDS,
+      new Container({
         direction: ContainerDirection.VERTICAL,
         scale: 1.0 / 3.0,
-        children: [
-          {
-            id: uuid(),
-            direction: ContainerDirection.UNDEFINED,
-            scale: 1.0 / 3.0,
-            children: [],
-          },
-          {
-            id: uuid(),
-            direction: ContainerDirection.UNDEFINED,
-            scale: 1.0 / 3.0,
-            children: [],
-          },
-          {
-            id: uuid(),
-            direction: ContainerDirection.UNDEFINED,
-            scale: 1.0 / 3.0,
-            children: [],
-          },
-        ],
-      },
+        children: [CONTAINER_THIRDS, CONTAINER_THIRDS, CONTAINER_THIRDS],
+      }),
     ],
     direction: ContainerDirection.HORIZONTAL,
-    scale: 1.0,
-    parentContainer: {
-      id: "ROOT_PARENT",
-      direction: ContainerDirection.UNDEFINED,
-      scale: 1.0,
-      children: [],
-    },
-  },
-  {
-    id: "ROOT",
+    parentContainer: ROOT_PARENT,
+  }),
+  // test container 3
+  new Container({
+    id: ROOT_ID,
     children: [
-      {
-        id: uuid(),
+      new Container({
         direction: ContainerDirection.VERTICAL,
         scale: 1.0 / 2.0,
-        children: [],
-      },
-      {
-        id: uuid(),
+      }),
+      new Container({
         direction: ContainerDirection.HORIZONTAL,
         scale: 1.0 / 2.0,
-        children: [
-          {
-            id: uuid(),
-            direction: ContainerDirection.UNDEFINED,
-            scale: 1.0 / 2.0,
-            children: [],
-          },
-          {
-            id: uuid(),
-            direction: ContainerDirection.UNDEFINED,
-            scale: 1.0 / 2.0,
-            children: [],
-          },
-        ],
-      },
+        children: [CONTAINER_HALVES, CONTAINER_HALVES],
+      }),
     ],
     direction: ContainerDirection.VERTICAL,
-    scale: 1.0,
-    parentContainer: {
-      id: "ROOT_PARENT",
-      direction: ContainerDirection.UNDEFINED,
-      scale: 1.0,
-      children: [],
-    },
-  },
+    parentContainer: ROOT_PARENT,
+  }),
 ];
