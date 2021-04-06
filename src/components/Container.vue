@@ -1,10 +1,8 @@
 <template>
   <!-- check if data is loaded -->
-  <div v-if="container.children" :style="getContainerStyle">
+  <div :style="getContainerStyle">
     <!-- if the container has no children, we render the window (recursive break) -->
-    <div v-if="container.children.length == 0" :style="getWindowStyle">
-      <div style="color: white">{{ container.id }}</div>
-    </div>
+    <WindowComponent v-if="isWindow" :container="container" />
     <!-- if container has children, render the children -->
     <Container
       v-else
@@ -12,7 +10,7 @@
       :key="child.id"
       :container="child"
       :parentContainer="container"
-      :selectedContainerId="selectedContainerId"
+      v-model:selectedContainerId="_selectedContainerId"
     />
   </div>
 </template>
@@ -21,23 +19,30 @@
 import { CSSProperties } from "@vue/runtime-dom";
 import "reflect-metadata";
 import { Vue, Options } from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop, PropSync } from "vue-property-decorator";
 import {
   Container,
   CONTAINER_BORDER_SIZE,
   CONTAINER_BORDER_COLOR,
-  WINDOW_BORDER_SIZE,
-  WINDOW_BORDER_COLOR,
   getContainerSizeCSS,
 } from "../lib/container/container.lib";
+import WindowComponent from "./Window.vue";
 
 @Options({
   name: "Container",
+  components: {
+    WindowComponent,
+  },
 })
 export default class ContainerComponent extends Vue {
   @Prop({ required: true }) container!: Container;
   @Prop({ required: true }) parentContainer!: Container;
-  @Prop({ required: false }) selectedContainerId!: string;
+  @PropSync("selectedContainerId", { type: String })
+  _selectedContainerId!: string;
+
+  get isWindow(): boolean {
+    return this.container.children && this.container.children.length == 0;
+  }
 
   get getContainerStyle(): CSSProperties {
     const containerSizeCSS: CSSProperties = getContainerSizeCSS(
@@ -51,21 +56,6 @@ export default class ContainerComponent extends Vue {
       ...containerSizeCSS,
     };
     return containerStyle;
-  }
-
-  get getWindowStyle(): CSSProperties {
-    const windowColor = this.isWindowSelected ? "red" : WINDOW_BORDER_COLOR;
-    const windowStyle: CSSProperties = {
-      border: `${WINDOW_BORDER_SIZE}px solid ${windowColor}`,
-      boxSizing: "border-box",
-      height: "100%",
-      width: "100%",
-    };
-    return windowStyle;
-  }
-
-  get isWindowSelected() {
-    return this.selectedContainerId == this.container.id;
   }
 
   splitContainer(direction: "VERTICAL" | "HORIZONTAL" | "UNDEFINED"): void {
