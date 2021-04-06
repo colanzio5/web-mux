@@ -27,7 +27,7 @@ export default class App extends Vue {
   container: Container = TEST_CONTAINERS[2];
   selectedContainerId?: string = this.container.getContainerMemberIds()[0];
 
-  keypressCallback(event: any) {
+  keypressCallback(event: KeyboardEvent): void {
     switch (event.keyCode) {
       case 39:
         this.changeSelectedContainer("UP");
@@ -40,7 +40,7 @@ export default class App extends Vue {
     }
   }
 
-  changeSelectedContainer(direction: string) {
+  changeSelectedContainer(direction: string): void {
     // eventually this should actually scroll to the container
     // in the direction you provide instead of just going to
     // the next id in the flattened id array

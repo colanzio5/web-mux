@@ -41,14 +41,14 @@ export class Container implements IContainer {
 
   constructor(options: IContainerOptions) {
     this.id = options?.id || uuid();
-    this.direction = options?.direction ||ContainerDirection.UNDEFINED;
+    this.direction = options?.direction || ContainerDirection.UNDEFINED;
     this.scale = options?.scale || 1.0;
     this.children = options?.children || [];
     this.parentContainer = options?.parentContainer;
     // assign parent container to children if given
     // ! this can be avoided if we come up with user drive methods for building layouts
     // ! for now we need this when creating templates from JSON/IContainerOptions
-    this.children.forEach(c => c.parentContainer = this);
+    this.children.forEach((c) => (c.parentContainer = this));
   }
 
   /** User Interface Methods */
@@ -67,13 +67,13 @@ export class Container implements IContainer {
   }
 
   /** Helper Methods */
-  isWindow() {
+  isWindow(): boolean {
     return this.children && this.children.length == 0;
   }
-  
+
   /** CSS Styling Methods */
-  getContainerStyle() {
-    const containerSizeCSS: CSSProperties = this._getContainerSizeCSS()
+  getContainerStyle(): CSSProperties {
+    const containerSizeCSS: CSSProperties = this._getContainerSizeCSS();
     const containerStyle: CSSProperties = {
       border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
       boxSizing: "border-box",
@@ -83,9 +83,11 @@ export class Container implements IContainer {
     return containerStyle;
   }
 
+  /**
+   * return the height, width, top, and left properties of the container
+   * @returns CSSProperties
+   */
   _getContainerSizeCSS(): CSSProperties {
-    // if(!this.parentContainer) return {};
-
     const containerCSS: CSSProperties = {};
     switch (this.parentContainer?.direction) {
       case ContainerDirection.VERTICAL:
@@ -107,6 +109,10 @@ export class Container implements IContainer {
     return containerCSS;
   }
 
+  /**
+   * returns a list of all the descendent container ids
+   * if called on the root container, will return list of id's of all containers
+   */
   getContainerMemberIds(): string[] {
     // from https://stackoverflow.com/questions/54245284/recursive-map-function
     const transform = ({ id, children }: Container): string[] => {

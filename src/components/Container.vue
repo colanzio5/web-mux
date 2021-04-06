@@ -38,10 +38,10 @@ export default class ContainerComponent extends Vue {
   get isWindow(): boolean {
     return this.container.isWindow();
   }
-  
+
   get getContainerStyle(): CSSProperties {
     const containerStyle = this.container.getContainerStyle();
-    console.log("getContainerStyle...", containerStyle)
+    console.log("getContainerStyle...", containerStyle);
     return containerStyle;
   }
 }
