@@ -20,12 +20,7 @@ import { CSSProperties } from "@vue/runtime-dom";
 import "reflect-metadata";
 import { Vue, Options } from "vue-class-component";
 import { Prop, PropSync } from "vue-property-decorator";
-import {
-  Container,
-  CONTAINER_BORDER_SIZE,
-  CONTAINER_BORDER_COLOR,
-  getContainerSizeCSS,
-} from "../lib/container/container.lib";
+import { Container } from "../lib/container/container.lib";
 import WindowComponent from "./Window.vue";
 
 @Options({
@@ -41,35 +36,13 @@ export default class ContainerComponent extends Vue {
   _selectedContainerId!: string;
 
   get isWindow(): boolean {
-    return this.container.children && this.container.children.length == 0;
+    return this.container.isWindow();
   }
-
+  
   get getContainerStyle(): CSSProperties {
-    const containerSizeCSS: CSSProperties = getContainerSizeCSS(
-      this.container,
-      this.parentContainer
-    );
-    const containerStyle: CSSProperties = {
-      border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
-      boxSizing: "border-box",
-      verticalAlign: "top", // required to keep window styles from shifting when contents are added
-      ...containerSizeCSS,
-    };
+    const containerStyle = this.container.getContainerStyle();
+    console.log("getContainerStyle...", containerStyle)
     return containerStyle;
-  }
-
-  splitContainer(direction: "VERTICAL" | "HORIZONTAL" | "UNDEFINED"): void {
-    console.log("splitContainer", direction);
-    switch (direction) {
-      case "VERTICAL":
-        break;
-      case "HORIZONTAL":
-        break;
-      case "UNDEFINED":
-        break;
-      default:
-        console.error("splitContainer direction not instantiated...");
-    }
   }
 }
 </script>

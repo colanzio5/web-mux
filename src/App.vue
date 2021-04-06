@@ -1,5 +1,5 @@
 <template>
-  <div class="root" ref="root">
+  <div class="root" ref="root" @keypress="keypressCallback">
     <ContainerComponent
       :id="container.id"
       :container="container"
@@ -13,10 +13,7 @@
 import "reflect-metadata";
 import { Vue, Options } from "vue-class-component";
 import ContainerComponent from "./components/Container.vue";
-import {
-  Container,
-  getContainerMemberIds,
-} from "./lib/container/container.lib";
+import { Container } from "./lib/container/container.lib";
 import { TEST_CONTAINERS } from "./lib/container/container.mocks";
 
 @Options({
@@ -28,15 +25,7 @@ export default class App extends Vue {
   // ! temp state assignment for testing/dev
   // add from json to json classes for this
   container: Container = TEST_CONTAINERS[2];
-  selectedContainerId?: string = getContainerMemberIds(this.container)[0];
-
-  mounted() {
-    window.addEventListener("keydown", this.keypressCallback);
-  }
-
-  beforeDestroy() {
-    window.addEventListener("keydown", this.keypressCallback);
-  }
+  selectedContainerId?: string = this.container.getContainerMemberIds()[0];
 
   keypressCallback(event: any) {
     switch (event.keyCode) {
@@ -55,7 +44,7 @@ export default class App extends Vue {
     // eventually this should actually scroll to the container
     // in the direction you provide instead of just going to
     // the next id in the flattened id array
-    const containers = getContainerMemberIds(this.container);
+    const containers = this.container.getContainerMemberIds();
     const currentIdx = containers.findIndex(
       (e) => e == this.selectedContainerId
     );
