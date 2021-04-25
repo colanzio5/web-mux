@@ -35,14 +35,16 @@ export default class ContainerComponent extends Vue {
   @PropSync("selectedContainerId", { type: String })
   _selectedContainerId!: string;
 
+  mounted() {
+    console.log(this._selectedContainerId);
+  }
+
   get isWindow(): boolean {
     return this.container.isWindow();
   }
 
   get getContainerStyle(): CSSProperties {
-    const containerStyle = this.container.getContainerStyle();
-    console.log("getContainerStyle...", containerStyle);
-    return containerStyle;
+    return this.container.getContainerStyle();
   }
 }
 </script>

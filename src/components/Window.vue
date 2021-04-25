@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="_selectedContainerId = container.id"
+    @click="emit()"
     :style="getWindowStyle"
     class="window"
   >
@@ -29,10 +29,12 @@ export default class WindowComponent extends Vue {
   _selectedContainerId!: string;
 
   get getWindowStyle(): CSSProperties {
-    const windowColor = this.isWindowSelected ? "red" : WINDOW_BORDER_COLOR;
+    const windowColor =
+      this._selectedContainerId === this.container.id
+        ? "red"
+        : WINDOW_BORDER_COLOR;
     const windowStyle: CSSProperties = {
       border: `${WINDOW_BORDER_SIZE}px solid ${windowColor}`,
-      // color: "white",
       boxSizing: "border-box",
       height: "100%",
       width: "100%",
@@ -40,8 +42,9 @@ export default class WindowComponent extends Vue {
     return windowStyle;
   }
 
-  get isWindowSelected(): boolean {
-    return this._selectedContainerId == this.container.id;
+  emit() {
+    console.log(this._selectedContainerId)
+    this._selectedContainerId = this.container.id
   }
 }
 </script>
