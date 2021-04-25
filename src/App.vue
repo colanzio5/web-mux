@@ -1,11 +1,14 @@
 <template>
-  <div class="root" ref="root" @keypress="keypressCallback">
-    <ContainerComponent
-      :id="container.id"
-      :container="container"
-      :parentContainer="container.parentContainer"
-      :selectedContainerId="selectedContainerId"
-    />
+  <div class="webmux">
+    <div class="root" ref="root" @keypress="keypressCallback">
+      <ContainerComponent
+        :id="container.id"
+        :container="container"
+        :parentContainer="container.parentContainer"
+        :selectedContainerId="selectedContainerId"
+      />      
+    </div>
+    <div class="status-bar">webmux</div>
   </div>
 </template>
 
@@ -70,15 +73,27 @@ export default class App extends Vue {
 </script>
 
 <style>
-.root {
+html, body {
+  margin: 0;
+}
+
+.webmux {
   background: black;
-  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.root {
   box-sizing: border-box;
-  /* border: 1px solid yellow; */
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
+  flex-grow: 1;
   color: white;
+}
+
+.status-bar {
+  min-height: 2em;
+  box-sizing: border-box;
+  border: 1px solid white;
 }
 </style>

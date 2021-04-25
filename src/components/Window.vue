@@ -23,6 +23,7 @@ import {
   name: "WindowComponent",
   emits: ["update:selectedContainerId"], // so vue doesnt throw error in browser,
 })
+// todo Window could use it's own class if needed...
 export default class WindowComponent extends Vue {
   @Prop({ required: true }) container!: Container;
   @PropSync("selectedContainerId", { type: String })
