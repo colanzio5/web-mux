@@ -1,11 +1,11 @@
 <template>
   <div class="webmux">
-    <div class="root" ref="root" @keypress="keypressCallback">
+    <div class="root-container" ref="root" @keypress="keypressCallback">
       <ContainerComponent
         :id="container.id"
         :container="container"
         :parentContainer="container.parentContainer"
-        :selectedContainerId="selectedContainerId"
+        v-model:selectedContainerId="selectedContainerId"
       />      
     </div>
     <div class="status-bar">webmux</div>
@@ -27,12 +27,9 @@ import { DEFAULT_CONTAINER, TEST_CONTAINERS } from "./lib/container/container.mo
 export default class App extends Vue {
   // ! temp state assignment for testing/dev
   // add from json to json classes for this
-  container: Container = DEFAULT_CONTAINER;
-  selectedContainerId?: string = this.container.getContainerMemberIds()[0];
-
-  mounted() {
-    console.log(this.selectedContainerId)
-  }
+  // container: Container = DEFAULT_CONTAINER;
+  container: Container = TEST_CONTAINERS[2];
+  selectedContainerId: string = this.container.getContainerMemberIds()[0];
 
   keypressCallback(event: KeyboardEvent): void {
     switch (event.keyCode) {
@@ -85,7 +82,7 @@ html, body {
   flex-direction: column;
 }
 
-.root {
+.root-container {
   box-sizing: border-box;
   flex-grow: 1;
   color: white;

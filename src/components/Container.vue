@@ -2,7 +2,11 @@
   <!-- check if data is loaded -->
   <div :style="getContainerStyle">
     <!-- if the container has no children, we render the window (recursive break) -->
-    <WindowComponent v-if="isWindow" :container="container" />
+    <WindowComponent
+      v-if="isWindow"
+      :container="container"
+      v-model:selectedContainerId="_selectedContainerId"
+    />
     <!-- if container has children, render the children -->
     <Container
       v-else
@@ -32,12 +36,7 @@ import WindowComponent from "./Window.vue";
 export default class ContainerComponent extends Vue {
   @Prop({ required: true }) container!: Container;
   @Prop({ required: true }) parentContainer!: Container;
-  @PropSync("selectedContainerId", { type: String })
-  _selectedContainerId!: string;
-
-  mounted() {
-    console.log(this._selectedContainerId);
-  }
+  @PropSync("selectedContainerId", { type: String }) _selectedContainerId!: string;
 
   get isWindow(): boolean {
     return this.container.isWindow();

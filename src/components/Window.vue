@@ -1,9 +1,5 @@
 <template>
-  <div
-    @click="emit()"
-    :style="getWindowStyle"
-    class="window"
-  >
+  <div @click="_selectedContainerId = container.id" :style="getWindowStyle">
     <div>{{ container.id }}</div>
   </div>
 </template>
@@ -43,15 +39,9 @@ export default class WindowComponent extends Vue {
     return windowStyle;
   }
 
-  emit() {
-    console.log(this._selectedContainerId)
-    this._selectedContainerId = this.container.id
+  selectContainer() {
+    console.log(this.container.id, this._selectedContainerId);
+    this._selectedContainerId = this.container.id;
   }
 }
 </script>
-
-<style scoped>
-.xterm-helper-textarea {
-  border: 0px;
-}
-</style>
