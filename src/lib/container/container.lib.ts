@@ -75,7 +75,7 @@ export class Container implements IContainer {
     const containerSizeCSS: CSSProperties = this._getContainerSizeCSS();
     const containerStyle: CSSProperties = {
       // border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
-      // boxSizing: "border-box",
+      boxSizing: "border-box",
       verticalAlign: "top", // required to keep window styles from shifting when contents are added
       ...containerSizeCSS,
     };

@@ -6,30 +6,41 @@
         :container="container"
         :parentContainer="container.parentContainer"
         v-model:selectedContainerId="selectedContainerId"
-      />      
+      ></ContainerComponent>
     </div>
-    <div class="status-bar">webmux</div>
+    <StatusBarComponent
+      :rootContainer="container"
+      :selectedContainerId="selectedContainerId"
+    ></StatusBarComponent>
   </div>
 </template>
 
 <script lang="ts">
 import "reflect-metadata";
 import { Vue, Options } from "vue-class-component";
-import ContainerComponent from "./components/Container.vue";
-import { Container } from "./lib/container/container.lib";
-import { DEFAULT_CONTAINER, TEST_CONTAINERS } from "./lib/container/container.mocks";
+import { Container } from "@/lib/container/container.lib";
+import { DEFAULT_CONTAINER } from "@/lib/container/container.mocks";
+import ContainerComponent from "@/components/Container.vue";
+import StatusBarComponent from "@/components/StatusBar.vue";
 
 @Options({
   components: {
     ContainerComponent,
+    StatusBarComponent
   },
 })
 export default class App extends Vue {
   // ! temp state assignment for testing/dev
   // add from json to json classes for this
-  // container: Container = DEFAULT_CONTAINER;
-  container: Container = TEST_CONTAINERS[2];
+  container: Container = DEFAULT_CONTAINER;
+  // container: Container = TEST_CONTAINERS[2];
   selectedContainerId: string = this.container.getContainerMemberIds()[0];
+
+  mounted() {
+    setInterval(() => {
+      console.log(window.performance);
+    }, 1000);
+  }
 
   keypressCallback(event: KeyboardEvent): void {
     switch (event.keyCode) {
@@ -70,8 +81,10 @@ export default class App extends Vue {
 </script>
 
 <style>
-html, body {
+html,
+body {
   margin: 0;
+  color: white;
 }
 
 .webmux {
@@ -86,11 +99,5 @@ html, body {
   box-sizing: border-box;
   flex-grow: 1;
   color: white;
-}
-
-.status-bar {
-  min-height: 2em;
-  box-sizing: border-box;
-  border: 1px solid red;
 }
 </style>
