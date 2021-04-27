@@ -91,6 +91,6 @@ html, body {
 .status-bar {
   min-height: 2em;
   box-sizing: border-box;
-  border: 1px solid white;
+  border: 1px solid red;
 }
 </style>
