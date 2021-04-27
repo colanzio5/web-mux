@@ -1,4 +1,4 @@
-import { CSSProperties } from "@vue/runtime-dom";
+import { Component as VueComponent, CSSProperties } from "@vue/runtime-dom";
 import { v4 as uuid } from "uuid";
 
 export const CONTAINER_BORDER_SIZE = 1;
@@ -19,6 +19,7 @@ export interface IContainerOptions {
   children?: Container[];
   // managed during vue runtime
   parentContainer?: Container;
+  component?: VueComponent;
 }
 
 export interface IContainer {
@@ -28,6 +29,7 @@ export interface IContainer {
   children: Container[];
   // managed during vue runtime
   parentContainer?: Container;
+  component?: VueComponent;
 }
 
 export class Container implements IContainer {
@@ -37,6 +39,7 @@ export class Container implements IContainer {
   children: Container[] = [];
   // managed during vue runtime
   parentContainer?: Container;
+  component?: VueComponent;
 
   constructor(options: IContainerOptions) {
     this.id = options?.id || uuid();
@@ -44,6 +47,7 @@ export class Container implements IContainer {
     this.scale = options?.scale || 1.0;
     this.children = options?.children || [];
     this.parentContainer = options?.parentContainer;
+    this.component = options?.component;
     // assign parent container to children if given
     // ! this can be avoided if we come up with user drive methods for building layouts
     // ! for now we need this when creating templates from JSON/IContainerOptions

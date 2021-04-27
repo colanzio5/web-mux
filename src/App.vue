@@ -19,7 +19,7 @@
 import "reflect-metadata";
 import { Vue, Options } from "vue-class-component";
 import { Container } from "@/lib/container/container.lib";
-import { DEFAULT_CONTAINER } from "@/lib/container/container.mocks";
+import { DEFAULT_CONTAINER, TEST_CONTAINERS } from "@/lib/container/container.mocks";
 import ContainerComponent from "@/components/Container.vue";
 import StatusBarComponent from "@/components/StatusBar.vue";
 
@@ -30,17 +30,12 @@ import StatusBarComponent from "@/components/StatusBar.vue";
   },
 })
 export default class App extends Vue {
+
   // ! temp state assignment for testing/dev
   // add from json to json classes for this
   container: Container = DEFAULT_CONTAINER;
   // container: Container = TEST_CONTAINERS[2];
   selectedContainerId: string = this.container.getContainerMemberIds()[0];
-
-  mounted() {
-    setInterval(() => {
-      console.log(window.performance);
-    }, 1000);
-  }
 
   keypressCallback(event: KeyboardEvent): void {
     switch (event.keyCode) {
