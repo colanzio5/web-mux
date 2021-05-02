@@ -55,8 +55,8 @@ export const TEST_CONTAINERS: Container[] = [
         direction: ContainerDirection.HORIZONTAL,
         scale: 1.0 / 2.0,
         children: [
-          new Container({ scale: 1.0 / 2.0, component: CanvasWindowComponent }),
-          new Container({ scale: 1.0 / 2.0, component: CanvasWindowComponent }),
+          new Container({ scale: 1.0 / 2.0 }),
+          new Container({ scale: 1.0 / 2.0 }),
         ],
       }),
     ],

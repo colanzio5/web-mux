@@ -33,8 +33,8 @@ export default class App extends Vue {
 
   // ! temp state assignment for testing/dev
   // add from json to json classes for this
-  container: Container = DEFAULT_CONTAINER;
-  // container: Container = TEST_CONTAINERS[2];
+  // container: Container = DEFAULT_CONTAINER;
+  container: Container = TEST_CONTAINERS[2];
   selectedContainerId: string = this.container.getContainerMemberIds()[0];
 
   keypressCallback(event: KeyboardEvent): void {

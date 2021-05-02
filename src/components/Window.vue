@@ -15,7 +15,9 @@ import {
   WINDOW_BORDER_COLOR,
 } from "../lib/container/container.lib";
 
-//! reading on dynamically mounting components
+// ! reading on dynamically mounting components
+// todo: need to create proxyElement vue component to abstract passing activeComponent AND props
+// ! how is two way binding going to work
 // https://stackoverflow.com/questions/43799416/dynamically-mount-a-single-file-component-in-vue-js
 import DefaultWindowComponent from "@/components/windows/Default.vue";
 import CanvasWindowComponent from "@/components/windows/Canvas.vue";
@@ -55,7 +57,6 @@ export default class WindowComponent extends Vue {
   }
 
   selectContainer() {
-    console.log(this.container.id, this._selectedContainerId);
     this._selectedContainerId = this.container.id;
   }
 }

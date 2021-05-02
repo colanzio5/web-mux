@@ -1,7 +1,7 @@
 import { Component as VueComponent, CSSProperties } from "@vue/runtime-dom";
 import { v4 as uuid } from "uuid";
 
-export const CONTAINER_BORDER_SIZE = 1;
+export const CONTAINER_BORDER_SIZE = 0;
 export const WINDOW_BORDER_SIZE = 1;
 export const CONTAINER_BORDER_COLOR = "black";
 export const WINDOW_BORDER_COLOR = "white";
@@ -78,7 +78,7 @@ export class Container implements IContainer {
   getContainerStyle(): CSSProperties {
     const containerSizeCSS: CSSProperties = this._getContainerSizeCSS();
     const containerStyle: CSSProperties = {
-      // border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
+      border: `${CONTAINER_BORDER_SIZE}px solid ${CONTAINER_BORDER_COLOR}`,
       boxSizing: "border-box",
       verticalAlign: "top", // required to keep window styles from shifting when contents are added
       ...containerSizeCSS,
